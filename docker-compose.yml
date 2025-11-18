@@ -1,0 +1,24 @@
+services:
+
+  train:
+    build:
+      context: ./training
+      dockerfile: Dockerfile.train
+    volumes:
+      - ./model:/app/model
+      - ./data:/app/data
+    environment:
+      MODEL_PATH: /app/model/model.pkl
+      PREPROCESSOR_PATH: /app/model/preprocess.pkl
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./model:/app/model
+    environment:
+      MODEL_PATH: /app/model/model.pkl
+      PREPROCESSOR_PATH: /app/model/preprocess.pkl
